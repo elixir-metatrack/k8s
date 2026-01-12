@@ -2,3 +2,4 @@
 .idea/
 .vscode/
 nird.bak/
+*secret.yaml
