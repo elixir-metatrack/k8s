@@ -1,0 +1,43 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: metatrack-api-egress
+spec:
+  podSelector:
+    matchLabels:
+      app: metatrack-api
+  policyTypes:
+    - Egress
+  egress:
+    - to: [{ podSelector: { matchLabels: { app: metatrack-db } } }]
+      ports: [{ port: 5432 }]
+    - to: [{ podSelector: { matchLabels: { app: keycloak } } }]
+      ports: [{ port: 8080 }]
+    - to: [{ podSelector: { matchLabels: { app: minio } } }]
+      ports: [{ port: 9000 }]
+    - ports: [{ port: 53, protocol: UDP }, { port: 53, protocol: TCP }] # DNS
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-metatrack-to-postgres-egress
+  namespace: elixir-uit-ns11105k
+spec:
+  podSelector:
+    matchLabels:
+      app: metatrack-api
+  policyTypes:
+    - Egress
+  egress:
+    - to:
+        - podSelector:
+            matchLabels:
+              app: metatrack-db
+      ports:
+        - protocol: TCP
+          port: 5432
+    - ports:
+        - protocol: UDP
+          port: 53
+        - protocol: TCP
+          port: 53

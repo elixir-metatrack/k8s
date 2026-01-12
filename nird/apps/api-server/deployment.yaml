@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: metatrack-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: metatrack-api
+  template:
+    metadata:
+      labels:
+        app: metatrack-api
+    spec:
+      imagePullSecrets:
+        - name: ghcr-pull-secret
+      containers:
+        - name: api
+          image: ghcr.io/elixir-metatrack/api-server:main
+          imagePullPolicy: Always
+          env:
+            # 1. Database Configuration
+            - name: QUARKUS_DATASOURCE_DB_KIND
+              value: "postgresql"
+            - name: QUARKUS_DATASOURCE_JDBC_URL
+              value: "jdbc:postgresql://metatrack-db:5432/metatrack"
+            - name: QUARKUS_DATASOURCE_USERNAME
+              value: "metatrack"
+            - name: QUARKUS_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: metatrack-postgres-secret
+                  key: password
+
+            # 2. Keycloak / OIDC Configuration
+            - name: QUARKUS_OIDC_AUTH_SERVER_URL
+              # Use the INTERNAL Keycloak URL for verification
+              value: "http://keycloak:8080/realms/metatrack"
+            - name: QUARKUS_OIDC_CLIENT_ID
+              value: "metatrack-api"
+
+            # 3. MinIO Configuration
+            - name: QUARKUS_MINIO_HOST
+              value: "http://minio"
+            - name: QUARKUS_MINIO_PORT
+              value: "9000"
+            - name: QUARKUS_MINIO_ACCESS_KEY
+              value: "minio"
+            - name: QUARKUS_MINIO_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: minio-secret
+                  key: password
+            - name: QUARKUS_MINIO_BUCKET_NAME
+              value: "metatrack"
+
+            # 4. App specific (Adjust based on your actual config)
+            - name: QUARKUS_HTTP_PORT
+              value: "8080"
+
+          ports:
+            - containerPort: 8080
+
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "250m"
+            limits:
+              memory: "1024Mi"
+              cpu: "500m"

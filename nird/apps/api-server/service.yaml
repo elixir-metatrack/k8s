@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: metatrack-api
+spec:
+  selector:
+    app: metatrack-api
+  ports:
+    - port: 80
+      targetPort: 8080
