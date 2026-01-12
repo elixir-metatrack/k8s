@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: metatrack-db
+spec:
+  serviceName: metatrack-db
+  replicas: 1
+  selector:
+    matchLabels:
+      app: metatrack-db
+  template:
+    metadata:
+      labels:
+        app: metatrack-db
+    spec:
+      securityContext:
+        fsGroup: 1001
+      containers:
+        - name: postgres
+          image: postgres:18-alpine
+          env:
+            - name: POSTGRES_DB
+              value: metatrack
+            - name: POSTGRES_USER
+              value: metatrack
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: metatrack-postgres-secret
+                  key: password
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/postgresql
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: 486626d9-dfc1-492e-9c51-1fe3db84ce4c
