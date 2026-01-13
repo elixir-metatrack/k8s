@@ -19,6 +19,14 @@ spec:
           image: ghcr.io/elixir-metatrack/api-server:main
           imagePullPolicy: Always
           env:
+            - name: QUARKUS_LOG_CONSOLE_JSON
+              value: "true"
+            - name: QUARKUS_LOG_CONSOLE_JSON_LOG_FORMAT
+              value: "ECS"
+            - name: QUARKUS_HTTP_ACCESS_LOG_ENABLED
+              value: "true"
+            - name: QUARKUS_LOG_CATEGORY__IO_QUARKUS_HTTP_ACCESS_LOG__LEVEL
+              value: "INFO"
             # 1. Database Configuration
             - name: QUARKUS_DATASOURCE_DB_KIND
               value: "postgresql"
