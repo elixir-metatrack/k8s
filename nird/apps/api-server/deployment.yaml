@@ -35,7 +35,7 @@ spec:
             # 2. Keycloak / OIDC Configuration
             - name: QUARKUS_OIDC_AUTH_SERVER_URL
               # Use the INTERNAL Keycloak URL for verification
-              value: "http://keycloak:8080/realms/metatrack"
+              value: "https://keycloak.elixir-uit.sigma2.no/realms/metatrack"
             - name: QUARKUS_OIDC_CLIENT_ID
               value: "metatrack-api"
 
