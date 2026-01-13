@@ -61,6 +61,8 @@ spec:
                   key: password
             - name: QUARKUS_MINIO_BUCKET_NAME
               value: "metatrack"
+            - name: QUARKUS_MINIO_PUBLIC_URL
+              value: "https://minio.elixir-uit.sigma2.no"
 
             # 4. App specific (Adjust based on your actual config)
             - name: QUARKUS_HTTP_PORT
