@@ -41,9 +41,9 @@ spec:
 
             # 3. MinIO Configuration
             - name: QUARKUS_MINIO_HOST
-              value: "http://minio"
+              value: "https://minio.elixir-uit.sigma2.no"
             - name: QUARKUS_MINIO_PORT
-              value: "9000"
+              value: "443"
             - name: QUARKUS_MINIO_ACCESS_KEY
               value: "minio"
             - name: QUARKUS_MINIO_SECRET_KEY
