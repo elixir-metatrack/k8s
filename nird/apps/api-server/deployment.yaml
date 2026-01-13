@@ -49,9 +49,13 @@ spec:
 
             # 3. MinIO Configuration
             - name: QUARKUS_MINIO_HOST
-              value: "http://minio"
-            - name: QUARKUS_MINIO_PORT
-              value: "9000"
+              value: "https://minio.elixir-uit.sigma2.no"
+            - name: QUARKUS_MINIO_SECURE
+              value: "true"
+            - name: QUARKUS_MINIO_REGION
+              value: "us-east-1"
+            - name: QUARKUS_MINIO_FORCE_PATH_STYLE
+              value: "true"
             - name: QUARKUS_MINIO_ACCESS_KEY
               value: "minio"
             - name: QUARKUS_MINIO_SECRET_KEY
@@ -61,8 +65,6 @@ spec:
                   key: password
             - name: QUARKUS_MINIO_BUCKET_NAME
               value: "metatrack"
-            - name: QUARKUS_MINIO_PUBLIC_URL
-              value: "https://minio.elixir-uit.sigma2.no"
 
             # 4. App specific (Adjust based on your actual config)
             - name: QUARKUS_HTTP_PORT
