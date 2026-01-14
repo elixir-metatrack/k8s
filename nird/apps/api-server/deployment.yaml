@@ -70,6 +70,12 @@ spec:
             - name: QUARKUS_HTTP_PORT
               value: "8080"
 
+            # 5. OpenAPI
+            - name: QUARKUS_SMALLRYE_OPENAPI_PATH
+              value: "/openapi"
+            - name: QUARKUS_SMALLRYE_OPENAPI_ALWAYS_INCLUDE
+              value: "true"
+
           ports:
             - containerPort: 8080
 
