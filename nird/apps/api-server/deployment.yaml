@@ -19,6 +19,10 @@ spec:
           image: ghcr.io/elixir-metatrack/api-server:main
           imagePullPolicy: Always
           env:
+            - name: QUARKUS_HTTP_CORS
+              value: "true"
+            - name: QUARKUS_HTTP_CORS_ORIGINS
+              value: "*"
             - name: QUARKUS_LOG_CONSOLE_JSON
               value: "true"
             - name: QUARKUS_LOG_CONSOLE_JSON_LOG_FORMAT
