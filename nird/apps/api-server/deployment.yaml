@@ -51,13 +51,13 @@ spec:
             # 2. Keycloak / OIDC Configuration
             - name: QUARKUS_OIDC_AUTH_SERVER_URL
               # Use the INTERNAL Keycloak URL for verification
-              value: "https://keycloak.elixir-uit.sigma2.no/realms/metatrack"
+              value: "https://auth.metatrack.no/realms/metatrack"
             - name: QUARKUS_OIDC_CLIENT_ID
               value: "metatrack-api"
 
             # 3. MinIO Configuration
             - name: QUARKUS_MINIO_HOST
-              value: "https://minio.elixir-uit.sigma2.no"
+              value: "https://storage.metatrack.no"
             - name: QUARKUS_MINIO_PORT
               value: ""
             - name: QUARKUS_MINIO_SECURE

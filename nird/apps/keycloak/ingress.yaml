@@ -9,10 +9,10 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - keycloak.elixir-uit.sigma2.no
-      secretName: wildcard-tls
+        - auth.metatrack.no
+      secretName: auth-tls
   rules:
-    - host: keycloak.elixir-uit.sigma2.no
+    - host: auth.metatrack.no
       http:
         paths:
           - path: /

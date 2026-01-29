@@ -6,11 +6,11 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - minio.elixir-uit.sigma2.no
-        - minio-console.elixir-uit.sigma2.no
-      secretName: wildcard-tls
+        - storage.metatrack.no
+        - minio-console.metatrack.no
+      secretName: minio-tls
   rules:
-    - host: minio.elixir-uit.sigma2.no
+    - host: minio.metatrack.no
       http:
         paths:
           - path: /
@@ -20,7 +20,7 @@ spec:
                 name: minio
                 port:
                   number: 9000
-    - host: minio-console.elixir-uit.sigma2.no
+    - host: minio-console.metatrack.no
       http:
         paths:
           - path: /

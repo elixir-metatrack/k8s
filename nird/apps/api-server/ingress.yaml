@@ -6,10 +6,10 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - api.elixir-uit.sigma2.no
-      secretName: wildcard-tls
+        - api.metatrack.no
+      secretName: api-tls
   rules:
-    - host: api.elixir-uit.sigma2.no
+    - host: api.metatrack.no
       http:
         paths:
           - path: /
