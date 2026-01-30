@@ -11,7 +11,7 @@ spec:
         - storage.metatrack.no
       secretName: minio-tls
   rules:
-    - host: minio.metatrack.no
+    - host: storage.metatrack.no
       http:
         paths:
           - path: /
