@@ -8,10 +8,10 @@ metadata:
 spec:
   tls:
     - hosts:
-        - minio-console.metatrack.no
-      secretName: minio-console-tls
+        - minio.metatrack.no
+      secretName: minioconsole-tls
   rules:
-    - host: minio-console.metatrack.no
+    - host: minio.metatrack.no
       http:
         paths:
           - path: /
