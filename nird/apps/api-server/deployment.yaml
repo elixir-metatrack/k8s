@@ -77,6 +77,8 @@ spec:
               value: "metatrack"
 
             # 4. App specific (Adjust based on your actual config)
+            - name: TAXON_API_URL
+              value: "http://taxhub"
             - name: QUARKUS_HTTP_PORT
               value: "8080"
 
