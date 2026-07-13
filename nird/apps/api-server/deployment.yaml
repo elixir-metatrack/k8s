@@ -23,7 +23,7 @@ spec:
               value: "true"
             - name: QUARKUS_HTTP_CORS_ORIGINS
               value: "*"
-            - name: QUARKUS_LOG_CONSOLE_JSON
+            - name: QUARKUS_LOG_CONSOLE_JSON_ENABLED
               value: "true"
             - name: QUARKUS_LOG_CONSOLE_JSON_LOG_FORMAT
               value: "ECS"
@@ -34,11 +34,11 @@ spec:
             # 1. Database Configuration
             - name: QUARKUS_DATASOURCE_DB_KIND
               value: "postgresql"
-            - name: QUARKUS_DATASOURCE_JDBC_URL
+            - name: JDBC_STRING
               value: "jdbc:postgresql://metatrack-db:5432/metatrack"
-            - name: QUARKUS_DATASOURCE_USERNAME
+            - name: DB_USERNAME
               value: "metatrack"
-            - name: QUARKUS_DATASOURCE_PASSWORD
+            - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: metatrack-postgres-secret
@@ -49,38 +49,34 @@ spec:
               value: "true"
 
             # 2. Keycloak / OIDC Configuration
-            - name: QUARKUS_OIDC_AUTH_SERVER_URL
+            - name: KEYCLOAK_URL
               # Use the INTERNAL Keycloak URL for verification
               value: "https://auth.metatrack.no/realms/metatrack"
             - name: QUARKUS_OIDC_CLIENT_ID
               value: "metatrack-api"
 
-            # 3. MinIO Configuration
-            - name: QUARKUS_MINIO_HOST
+            # 3. S3 / MinIO Configuration
+            - name: S3_ENDPOINT
               value: "https://storage.metatrack.no"
-            - name: QUARKUS_MINIO_PORT
-              value: ""
-            - name: QUARKUS_MINIO_SECURE
-              value: "true"
-            - name: QUARKUS_MINIO_REGION
+            - name: S3_REGION
               value: "us-east-1"
-            - name: QUARKUS_MINIO_FORCE_PATH_STYLE
+            - name: S3_PATH_STYLE_ACCESS
               value: "true"
-            - name: QUARKUS_MINIO_ACCESS_KEY
+            - name: S3_ACCESS_KEY
               value: "minio"
-            - name: QUARKUS_MINIO_SECRET_KEY
+            - name: S3_SECRET_KEY
               valueFrom:
                 secretKeyRef:
                   name: minio-secret
                   key: password
-            - name: QUARKUS_MINIO_BUCKET_NAME
+            - name: S3_BUCKET_NAME
               value: "metatrack"
 
             # 4. App specific (Adjust based on your actual config)
             - name: TAXON_API_URL
               value: "http://taxhub"
             - name: QUARKUS_HTTP_PORT
-              value: "8080"
+              value: "1234"
 
             # 5. OpenAPI
             - name: QUARKUS_SMALLRYE_OPENAPI_PATH
@@ -89,7 +85,7 @@ spec:
               value: "true"
 
           ports:
-            - containerPort: 8080
+            - containerPort: 1234
 
           resources:
             requests:

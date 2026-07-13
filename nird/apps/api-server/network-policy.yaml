@@ -12,12 +12,13 @@ spec:
     - to: [{ podSelector: { matchLabels: { app: metatrack-db } } }]
       ports: [{ port: 5432 }]
     - to: [{ podSelector: { matchLabels: { app: keycloak } } }]
-      ports: [{ port: 8080 }]
+      ports: [{ port: 8080 }, { port: 443 }]
     - to: [{ podSelector: { matchLabels: { app: minio } } }]
-      ports: [{ port: 9000 }]
+      ports: [{ port: 9000 }, { port: 443 }]
     - to: [{ podSelector: { matchLabels: { app: taxhub } } }]
       ports: [{ port: 80 }, { port: 8080 }]
     - ports: [{ port: 53, protocol: UDP }, { port: 53, protocol: TCP }] # DNS
+    - ports: [{ port: 443, protocol: TCP }] # HTTPS for Keycloak/MinIO public URLs
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
@@ -60,4 +61,4 @@ spec:
             cidr: 0.0.0.0/0
       ports:
         - protocol: TCP
-          port: 8080
+          port: 1234
