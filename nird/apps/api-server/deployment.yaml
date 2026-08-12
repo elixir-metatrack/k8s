@@ -52,6 +52,24 @@ spec:
             - name: KEYCLOAK_URL
               # Use the INTERNAL Keycloak URL for verification
               value: "https://auth.metatrack.no/realms/metatrack"
+            - name: KEYCLOAK_BASE_URL
+              value: "https://auth.metatrack.no"
+            - name: KEYCLOAK_REALM
+              value: "metatrack"
+            - name: KEYCLOAK_ADMIN_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                 name: keycloak-admin-secret
+                 key: client-id
+            - name: KEYCLOAK_ADMIN_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-admin-secret
+                  key: client-secret
+            - name: KEYCLOAK_USERNAME_CACHE_TTL
+              value: "10M"
+            - name: KEYCLOAK_USERNAME_CACHE_MAX_SIZE
+              value: "1000"
             - name: QUARKUS_OIDC_CLIENT_ID
               value: "metatrack-api"
 
