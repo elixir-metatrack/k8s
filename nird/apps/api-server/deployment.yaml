@@ -71,7 +71,7 @@ spec:
             - name: KEYCLOAK_USERNAME_CACHE_MAX_SIZE
               value: "1000"
             - name: QUARKUS_OIDC_CLIENT_ID
-              value: "metatrack-api"
+              value: "metatrack-api-admin"
 
             # 3. S3 / MinIO Configuration
             - name: S3_ENDPOINT
