@@ -31,6 +31,8 @@ spec:
               value: "true"
             - name: QUARKUS_LOG_CATEGORY__IO_QUARKUS_HTTP_ACCESS_LOG__LEVEL
               value: "INFO"
+            - name: QUARKUS_VIRTUAL_THREADS_ENABLED
+              value: "true"
             # 1. Database Configuration
             - name: QUARKUS_DATASOURCE_DB_KIND
               value: "postgresql"
