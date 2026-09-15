@@ -104,6 +104,36 @@ spec:
             - name: QUARKUS_SMALLRYE_OPENAPI_ALWAYS_INCLUDE
               value: "true"
 
+            # 6. Invitation and SMTP Configuration
+            - name: INVITATION_LOGIN_URL
+              value: "https://metatrack.no/login"
+            - name: INVITATION_REGISTRATION_URL
+              value: "https://metatrack.no/register"
+            - name: QUARKUS_MAILER_LOG_INVALID_RECIPIENTS
+              value: "false"
+            - name: QUARKUS_MAILER_LOG_REJECTED_RECIPIENTS
+              value: "false"
+            - name: QUARKUS_MAILER_MOCK
+              value: "false"
+            - name: SMTP_FROM
+              value: "noreply@metatrack.no"
+            - name: SMTP_HOST
+              value: "smtp-relay.uit.no"
+            - name: SMTP_PORT
+              value: "25"
+            - name: QUARKUS_MAILER_START_TLS
+              value: "DISABLED"
+            - name: QUARKUS_MAILER_LOGIN
+              value: "DISABLED"
+            - name: QUARKUS_MAILER_TLS
+              value: "false"
+            - name: QUARKUS_MAILER_TIMEOUT
+              value: "30S"
+            - name: QUARKUS_TLS_INVITATION_TRUST_ALL
+              value: "false"
+            - name: QUARKUS_TLS_INVITATION_HOSTNAME_VERIFICATION_ALGORITHM
+              value: "HTTPS"
+
           ports:
             - containerPort: 1234
 
