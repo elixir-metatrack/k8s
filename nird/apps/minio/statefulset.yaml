@@ -20,7 +20,7 @@ spec:
         fsGroup: 2111105
       containers:
         - name: minio
-          image: quay.io/minio/minio:latest
+          image: docker.io/pgsty/silo:RELEASE.2026-09-16T00-00-00Z
           args: ["server", "/data", "--console-address", ":9001"]
           securityContext:
             allowPrivilegeEscalation: false
