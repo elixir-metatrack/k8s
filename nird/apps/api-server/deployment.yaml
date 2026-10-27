@@ -74,6 +74,12 @@ spec:
               value: "1000"
             - name: QUARKUS_OIDC_CLIENT_ID
               value: "metatrack-api-admin"
+            - name: KEYCLOAK_PROFILE_COUNTRY_ATTRIBUTE
+              value: "Country"
+            - name: KEYCLOAK_PROFILE_INSTITUTION_ATTRIBUTE
+              value: "Institution"
+            - name: KEYCLOAK_PROFILE_ORCID_ATTRIBUTE
+              value: "ORCID"
 
             # 3. S3 / MinIO Configuration
             - name: S3_ENDPOINT
