@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: sftpgo-postgres
+spec:
+  serviceName: sftpgo-postgres
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sftpgo-postgres
+  template:
+    metadata:
+      labels:
+        app: sftpgo-postgres
+    spec:
+      securityContext:
+        fsGroup: 1001
+      containers:
+        - name: postgres
+          image: postgres:18-alpine
+          env:
+            - name: POSTGRES_DB
+              value: sftpgo
+            - name: POSTGRES_USER
+              value: sftpgo
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: sftpgo-postgres-secret
+                  key: password
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/postgresql
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: 0fc9ceee-1d37-4812-a3ca-188f881c3eb6
