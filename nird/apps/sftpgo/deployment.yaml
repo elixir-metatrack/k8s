@@ -1,0 +1,131 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sftpgo
+  namespace: elixir-uit-ns11105k
+  labels:
+    app.kubernetes.io/name: sftpgo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: elixir-uit-ns11105k-sftpgo
+  template:
+    metadata:
+      labels:
+        app: elixir-uit-ns11105k-sftpgo
+        app.kubernetes.io/name: sftpgo
+    spec:
+      containers:
+        - name: sftpgo
+          image: ghcr.io/drakkan/sftpgo:v2.7.6
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: SFTPGO_DATA_PROVIDER__DRIVER
+              value: postgresql
+            - name: SFTPGO_DATA_PROVIDER__NAME
+              value: sftpgo
+            - name: SFTPGO_DATA_PROVIDER__HOST
+              value: sftpgo-postgres
+            - name: SFTPGO_DATA_PROVIDER__PORT
+              value: "5432"
+            - name: SFTPGO_DATA_PROVIDER__USERNAME
+              value: sftpgo
+            - name: SFTPGO_DATA_PROVIDER__PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: sftpgo-postgres-secret
+                  key: password
+            - name: SFTPGO_DATA_PROVIDER__CREATE_DEFAULT_ADMIN
+              value: "1"
+            - name: SFTPGO_DEFAULT_ADMIN_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: sftpgo-secret
+                  key: bootstrap-admin-username
+            - name: SFTPGO_DEFAULT_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: sftpgo-secret
+                  key: bootstrap-admin-password
+            - name: SFTPGO_HTTPD__SIGNING_PASSPHRASE
+              valueFrom:
+                secretKeyRef:
+                  name: sftpgo-secret
+                  key: signing-passphrase
+            - name: SFTPGO_KMS__SECRETS__MASTER_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: sftpgo-secret
+                  key: kms-master-key
+            - name: SFTPGO_SFTPD__BINDINGS__0__PORT
+              value: "2022"
+            - name: SFTPGO_SFTPD__HOST_KEYS
+              value: /etc/sftpgo/host-keys/ssh_host_ed25519_key
+            - name: SFTPGO_SFTPD__PASSWORD_AUTHENTICATION
+              value: "0"
+            - name: SFTPGO_SFTPD__KEYBOARD_INTERACTIVE_AUTHENTICATION
+              value: "false"
+            - name: SFTPGO_FTPD__BINDINGS__0__PORT
+              value: "-1"
+            - name: SFTPGO_WEBDAVD__BINDINGS__0__PORT
+              value: "-1"
+            - name: SFTPGO_HTTPD__BINDINGS__0__PORT
+              value: "8080"
+            - name: SFTPGO_HTTPD__BINDINGS__0__ENABLE_WEB_ADMIN
+              value: "true"
+            - name: SFTPGO_HTTPD__BINDINGS__0__ENABLE_WEB_CLIENT
+              value: "false"
+            - name: SFTPGO_HTTPD__BINDINGS__0__TEMPLATES_PATH
+              value: /usr/share/sftpgo/templates
+            - name: SFTPGO_HTTPD__BINDINGS__0__STATIC_FILES_PATH
+              value: /usr/share/sftpgo/static
+            - name: SFTPGO_HTTPD__BINDINGS__0__OIDC__CLIENT_ID
+              value: sftpgo-client
+            - name: SFTPGO_HTTPD__BINDINGS__0__OIDC__CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: sftpgo-secret
+                  key: oidc-client-secret
+            - name: SFTPGO_HTTPD__BINDINGS__0__OIDC__CONFIG_URL
+              value: https://auth.metatrack.no/realms/metatrack
+            - name: SFTPGO_HTTPD__BINDINGS__0__OIDC__REDIRECT_BASE_URL
+              value: https://sftp.metatrack.no
+            - name: SFTPGO_HTTPD__BINDINGS__0__OIDC__USERNAME_FIELD
+              value: preferred_username
+            - name: SFTPGO_HTTPD__BINDINGS__0__OIDC__ROLE_FIELD
+              value: sftpgo_role
+            - name: SFTPGO_HTTPD__BINDINGS__0__OIDC__ROLE_VALUES
+              value: admin
+            - name: SFTPGO_HTTPD__BINDINGS__0__OIDC__SCOPES
+              value: openid,profile,email
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+            - name: sftp
+              containerPort: 2022
+              protocol: TCP
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+              ephemeral-storage: 200Gi
+            limits:
+              cpu: 1
+              memory: 1Gi
+              ephemeral-storage: 500Gi
+          volumeMounts:
+            - name: sftpgo-data
+              mountPath: /srv/sftpgo
+            - name: host-keys
+              mountPath: /etc/sftpgo/host-keys
+              readOnly: true
+      volumes:
+        - name: sftpgo-data
+          emptyDir:
+            sizeLimit: 200Gi
+        - name: host-keys
+          secret:
+            secretName: sftpgo-host-keys
+            defaultMode: 0440

@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: sftpgo-ingress
+  namespace: elixir-uit-ns11105k
+  annotations:
+    kubernetes.io/tls-acme: "true"
+    kubernetes.io/ingress.class: nginx
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - sftp.metatrack.no
+      secretName: sftpgo-tls
+  rules:
+    - host: sftp.metatrack.no
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: sftpgo
+                port:
+                  number: 80
