@@ -18,13 +18,17 @@ spec:
     spec:
       containers:
         - name: sftpgo
-          image: ghcr.io/drakkan/sftpgo:v2.7.6
+          image: drakkan/sftpgo:v2.7.6
           imagePullPolicy: IfNotPresent
           env:
             - name: SFTPGO_DATA_PROVIDER__DRIVER
               value: postgresql
             - name: SFTPGO_DATA_PROVIDER__NAME
               value: sftpgo
+            - name: SFTPGO_DATA_PROVIDER__USERS_BASE_DIR
+              value: /srv/sftpgo/data
+            - name: SFTPGO_DATA_PROVIDER__TRACK_QUOTA
+              value: "2"
             - name: SFTPGO_DATA_PROVIDER__HOST
               value: sftpgo-postgres
             - name: SFTPGO_DATA_PROVIDER__PORT
@@ -37,7 +41,7 @@ spec:
                   name: sftpgo-postgres-secret
                   key: password
             - name: SFTPGO_DATA_PROVIDER__CREATE_DEFAULT_ADMIN
-              value: "1"
+              value: "true"
             - name: SFTPGO_DEFAULT_ADMIN_USERNAME
               valueFrom:
                 secretKeyRef:
@@ -60,6 +64,10 @@ spec:
                   key: kms-master-key
             - name: SFTPGO_SFTPD__BINDINGS__0__PORT
               value: "2022"
+            - name: SFTPGO_COMMON__UPLOAD_MODE
+              value: "6"
+            - name: SFTPGO_COMMON__RESUME_MAX_SIZE
+              value: "53687091200"
             - name: SFTPGO_SFTPD__HOST_KEYS
               value: /etc/sftpgo/host-keys/ssh_host_ed25519_key
             - name: SFTPGO_SFTPD__PASSWORD_AUTHENTICATION
@@ -110,7 +118,7 @@ spec:
             requests:
               cpu: 250m
               memory: 512Mi
-              ephemeral-storage: 200Gi
+              ephemeral-storage: 450Gi
             limits:
               cpu: 1
               memory: 1Gi
@@ -124,7 +132,7 @@ spec:
       volumes:
         - name: sftpgo-data
           emptyDir:
-            sizeLimit: 200Gi
+            sizeLimit: 450Gi
         - name: host-keys
           secret:
             secretName: sftpgo-host-keys

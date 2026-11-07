@@ -19,7 +19,7 @@ spec:
           image: ghcr.io/elixir-metatrack/api-server:main
           imagePullPolicy: Always
           env:
-            - name: QUARKUS_HTTP_CORS
+            - name: QUARKUS_HTTP_CORS_ENABLED
               value: "true"
             - name: QUARKUS_HTTP_CORS_ORIGINS
               value: "*"
@@ -29,6 +29,10 @@ spec:
               value: "ECS"
             - name: QUARKUS_HTTP_ACCESS_LOG_ENABLED
               value: "true"
+            - name: QUARKUS_HTTP_ACCESS_LOG_EXCLUDE_PATTERN
+              value: '^/api/users/search(?:/.*)?$'
+            - name: QUARKUS_HTTP_ACCESS_LOG_LOG_TO_FILE
+              value: "false"
             - name: QUARKUS_LOG_CATEGORY__IO_QUARKUS_HTTP_ACCESS_LOG__LEVEL
               value: "INFO"
             - name: QUARKUS_VIRTUAL_THREADS_ENABLED
@@ -97,6 +101,47 @@ spec:
                   key: password
             - name: S3_BUCKET_NAME
               value: "metatrack"
+
+            # 3a. SFTPGo integration
+            - name: SFTPGO_ENABLED
+              value: "true"
+            - name: SFTPGO_API_URL
+              value: "http://sftpgo.elixir-uit-ns11105k.svc.cluster.local:80"
+            - name: SFTPGO_ADMIN_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: sftpgo-secret
+                  key: bootstrap-admin-username
+            - name: SFTPGO_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: sftpgo-secret
+                  key: bootstrap-admin-password
+            - name: SFTPGO_SFTP_HOST
+              value: "sftp.metatrack.no"
+            - name: SFTPGO_SFTP_PORT
+              value: "2022"
+            - name: SFTPGO_S3_ENDPOINT
+              value: "$(S3_ENDPOINT)"
+            - name: SFTPGO_S3_REGION
+              value: "$(S3_REGION)"
+            - name: SFTPGO_S3_ACCESS_KEY
+              value: "$(S3_ACCESS_KEY)"
+            - name: SFTPGO_S3_SECRET_KEY
+              value: "$(S3_SECRET_KEY)"
+            - name: SFTPGO_S3_BUCKET_NAME
+              value: "$(S3_BUCKET_NAME)"
+            - name: SFTPGO_S3_PATH_STYLE_ACCESS
+              value: "$(S3_PATH_STYLE_ACCESS)"
+            - name: SFTPGO_HOOK_URL
+              value: "http://metatrack-api.elixir-uit-ns11105k.svc.cluster.local:80/api/internal/sftpgo/events"
+            - name: SFTPGO_HOOK_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: sftpgo-secret
+                  key: hook-secret
+            - name: SFTPGO_RESUME_MAX_SIZE_BYTES
+              value: "53687091200"
 
             # 4. App specific (Adjust based on your actual config)
             - name: TAXON_API_URL
