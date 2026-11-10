@@ -16,6 +16,8 @@ spec:
         app: elixir-uit-ns11105k-sftpgo
         app.kubernetes.io/name: sftpgo
     spec:
+      securityContext:
+        fsGroup: 1000
       containers:
         - name: sftpgo
           image: drakkan/sftpgo:v2.7.6
@@ -45,22 +47,22 @@ spec:
             - name: SFTPGO_DEFAULT_ADMIN_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: sftpgo-secret
+                  name: sftpgo-secrets
                   key: bootstrap-admin-username
             - name: SFTPGO_DEFAULT_ADMIN_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: sftpgo-secret
+                  name: sftpgo-secrets
                   key: bootstrap-admin-password
             - name: SFTPGO_HTTPD__SIGNING_PASSPHRASE
               valueFrom:
                 secretKeyRef:
-                  name: sftpgo-secret
+                  name: sftpgo-secrets
                   key: signing-passphrase
             - name: SFTPGO_KMS__SECRETS__MASTER_KEY
               valueFrom:
                 secretKeyRef:
-                  name: sftpgo-secret
+                  name: sftpgo-secrets
                   key: kms-master-key
             - name: SFTPGO_SFTPD__BINDINGS__0__PORT
               value: "2022"
@@ -93,7 +95,7 @@ spec:
             - name: SFTPGO_HTTPD__BINDINGS__0__OIDC__CLIENT_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: sftpgo-secret
+                  name: sftpgo-secrets
                   key: oidc-client-secret
             - name: SFTPGO_HTTPD__BINDINGS__0__OIDC__CONFIG_URL
               value: https://auth.metatrack.no/realms/metatrack
@@ -118,11 +120,11 @@ spec:
             requests:
               cpu: 250m
               memory: 512Mi
-              ephemeral-storage: 450Gi
+              ephemeral-storage: 20Gi
             limits:
               cpu: 1
               memory: 1Gi
-              ephemeral-storage: 500Gi
+              ephemeral-storage: 25Gi
           volumeMounts:
             - name: sftpgo-data
               mountPath: /srv/sftpgo
@@ -132,7 +134,7 @@ spec:
       volumes:
         - name: sftpgo-data
           emptyDir:
-            sizeLimit: 450Gi
+            sizeLimit: 20Gi
         - name: host-keys
           secret:
             secretName: sftpgo-host-keys
