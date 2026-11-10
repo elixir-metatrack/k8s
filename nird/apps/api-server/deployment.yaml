@@ -110,12 +110,12 @@ spec:
             - name: SFTPGO_ADMIN_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: sftpgo-secret
+                  name: sftpgo-secrets
                   key: bootstrap-admin-username
             - name: SFTPGO_ADMIN_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: sftpgo-secret
+                  name: sftpgo-secrets
                   key: bootstrap-admin-password
             - name: SFTPGO_SFTP_HOST
               value: "sftp.metatrack.no"
@@ -138,7 +138,7 @@ spec:
             - name: SFTPGO_HOOK_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: sftpgo-secret
+                  name: sftpgo-secrets
                   key: hook-secret
             - name: SFTPGO_RESUME_MAX_SIZE_BYTES
               value: "53687091200"
